@@ -1,0 +1,9 @@
+# kubectl create configmap sample-configmap --namespace=default --dry-run=client -o=yaml --from-literal=message=hello > sample-configmap.yml
+apiVersion: v1
+data:
+  message: hello
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: sample-configmap
+  namespace: default
