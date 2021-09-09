@@ -1,0 +1,17 @@
+# TODO- never got it to work :((
+apiVersion: v1
+kind: Pod
+metadata: 
+    name: pod-with-resources
+spec:
+    containers:
+        - name: busybox
+          image: busybox
+          command: ['sh','-s','while true; do sleep 3600; done']
+          resources:
+              requests:
+                  cpu: "250m"
+                  memory: "128Mi"
+              limits:
+                  cpu: "500m"
+                  memory: "256Mi"
