@@ -1,0 +1,29 @@
+# a sample daemonset which cleans up files in every node
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cleaner
+spec:
+  selector:
+    matchLabels:
+      # select pods with this app name
+      app: cleaning-agent
+  # use this template to create the pods
+  template:
+    metadata:
+      labels: 
+        app: cleaning-agent
+    spec:
+      containers:
+        - name: cleaning-agent
+          image: busybox
+          command: ['sh','-c','while true; do rm -rf /temp-files/*; sleep 60; done']
+          volumeMounts:
+            - name: temp-files
+              mountPath: /temp-files
+      # end container spec
+      # define the volume
+      volumes:
+        - name: temp-files
+          hostPath:
+            path: /tmp/temp-files
