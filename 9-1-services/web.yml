@@ -1,0 +1,97 @@
+# example stack to show services - clusterip and nodeport
+# has two components - a web application (web-app) and a backend db (app-database)
+#
+
+---
+# deployment web-app
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: web-app
+  template:
+    metadata:
+      labels: 
+          app: web-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            -  containerPort: 80
+---
+# deployment app-database
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: app-database
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: app-database
+  template:
+    metadata:
+      labels:
+        app: app-database
+    spec:
+      containers:
+        - name: redis
+          image: redis
+          ports:
+            - containerPort: 6379
+---
+# utility busybox pod with curl
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: util-curl
+spec:
+  containers:
+    - name: busybox
+      image: radial/busyboxplus:curl
+      command: ['sh','-c','while true; do sleep 10; done']
+---
+# utility netshoot
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: util-net
+spec: 
+  containers:
+    - name: util-net
+      image: nicolaka/netshoot
+      command: ["ping","localhost"]
+---
+# connect web-app to app-database
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web-db
+spec:
+  type: ClusterIP
+  selector: 
+    app: app-database
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+---
+# connect web to world
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web-world
+spec:
+  type: NodePort
+  selector:
+    app: web-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30001
