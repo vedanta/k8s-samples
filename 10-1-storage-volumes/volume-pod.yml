@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-pod
+spec:
+  volumes:
+    - name: my-volume
+      hostPath:
+        path: /data
+  containers: 
+    - name: busybox
+      image: busybox
+      volumeMounts: 
+        - name: my-volume
+          mountPath: /output
