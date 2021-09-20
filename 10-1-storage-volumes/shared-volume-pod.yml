@@ -6,15 +6,20 @@ spec:
   volumes:
     - name: shared-volume
       emptyDir: {}
+
   containers: 
+
     - name: busybox-1
       image: busybox
+      command: ['sh','-c','while true; do echo Success! > /write/status.txt;sleep 5; done']
       volumeMounts: 
         - name: shared-volume
-          mountPath: /input
+          mountPath: /write
+
     - name: busybox-2
       image: busybox
+      command: ['sh','-c','while true; do cat /read/status.txt; sleep 5; done']
       volumeMounts: 
         - name: shared-volume
-          mountPath: /output
+          mountPath: /read
 

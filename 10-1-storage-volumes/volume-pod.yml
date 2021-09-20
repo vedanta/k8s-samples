@@ -3,13 +3,15 @@ kind: Pod
 metadata:
   name: volume-pod
 spec:
+  restartPolicy: Never
   volumes:
     - name: my-volume
       hostPath:
-        path: /data
+        path: /var/data
   containers: 
     - name: busybox
       image: busybox
+      command: ['sh','-c','echo Done! > /output/status.txt']
       volumeMounts: 
         - name: my-volume
           mountPath: /output
