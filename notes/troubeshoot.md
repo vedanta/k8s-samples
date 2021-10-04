@@ -1,0 +1,8 @@
+- kubernetes api server
+-- docker service
+-- kubelet service
+- kubeconfig setup
+- nodes issues 
+-- service issues
+-- docker service
+-- kubelet service
