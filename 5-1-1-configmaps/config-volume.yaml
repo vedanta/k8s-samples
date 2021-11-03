@@ -1,0 +1,89 @@
+# how do I make a config map available as a file within the pod ?
+# Storage Class
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+---
+# PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+  namespace: default
+spec:
+  storageClassName: sc
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests: 
+      storage: 2Gi
+---
+# PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+  labels: 
+    type: local
+spec:
+  storageClassName: sc
+  persistentVolumeReclaimPolicy: Recycle
+  capacity: 
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath: 
+    path: /var/data
+---
+# ConfigMap
+apiVersion: v1
+metadata:
+  name: cm
+kind: ConfigMap
+data:
+  game.conf: |
+    # game config
+    game.players = 2
+    game.servers = 2
+    game.timeout = 100
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: app
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - while true; do sleep 100; done
+        image: busybox
+        name: busybox
+        volumeMounts:
+          - mountPath: /data
+            name: volume-map
+      volumes:
+        - name: volume-map
+          # persistentVolumeClaim: 
+          #  claimName: pvc
+          configMap:
+            name: cm
+
+

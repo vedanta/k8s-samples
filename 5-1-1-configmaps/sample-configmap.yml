@@ -7,3 +7,14 @@ metadata:
   creationTimestamp: null
   name: sample-configmap
   namespace: default
+apiVersion: v1
+data:
+  sample.txt: |
+    # game config
+    game.players = 2
+    game.servers = 2
+    game.timeout = 100
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: web-config
