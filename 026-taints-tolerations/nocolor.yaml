@@ -1,0 +1,21 @@
+# node affinity
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nocolor
+  name: nocolor
+spec:
+  containers:
+  - image: nginx
+    name: nocolor
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key : env
+              operator: In
+              values:
+              - dev

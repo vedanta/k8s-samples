@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: green
+  name: green-pod
+spec:
+  containers:
+  - image: nginx
+    name: green
+  tolerations:
+  - key: "color"
+    operator: "Equal"
+    value: "green"
+    effect: "NoSchedule"
+
+  
