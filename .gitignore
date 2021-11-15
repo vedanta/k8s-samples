@@ -1,2 +1,4 @@
 ./vault/keys.json
 ca.key
+ca.*
+*.key

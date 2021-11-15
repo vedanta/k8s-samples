@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: np-busybox
-  namespace: np-test
+  name: curl-pod
+  namespace: netpol
   labels:
     app: client
 spec:
   containers:
-    - name: busybox
+    - name: curl 
       image: radial/busyboxplus:curl
       command: ['sh', '-c', 'while true; do sleep 5; done'] 
