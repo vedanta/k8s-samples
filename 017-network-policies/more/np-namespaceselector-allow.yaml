@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: np-podselector-blockall
+  name: np-namespaceselector-allow
   namespace: netpol
 spec:
   podSelector:
@@ -16,3 +16,7 @@ spec:
     - namespaceSelector:
         matchLabels:
           team: web
+    ports:
+    - protocol: TCP
+      port: 80
+  egress: []

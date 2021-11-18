@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ubuntu02
+  name: ubuntu02
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - while true; do sleep 3400; done
+    image: ubuntu
+    name: ubuntu02
+    securityContext:
+      runAsUser: 1001

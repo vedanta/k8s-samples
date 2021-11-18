@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: multi-con-01
+  name: multi-con-01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-con-01
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: multi-con-01
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_URL
+          valueFrom:
+           configMapKeyRef:
+             name: db-config
+             key: db-port
+        - name: DB_PORT
+          valueFrom:
+           configMapKeyRef:
+             name: db-config
+             key: db-host
+        - name: DB_NAME
+          valueFrom:
+           configMapKeyRef:
+             name: db-config
+             key: db-name
+      - image: ubuntu
+        name: ubuntu
+        command: 
+        - "/bin/sh"
+        - "-c"
+        - "while true; do sleep 5000; done"
+        env:
+        - name: db_user
+          valueFrom:
+           secretKeyRef:
+             name: db-creds
+             key: db_user
+        - name: db_password
+          valueFrom:
+           secretKeyRef:
+             name: db-creds
+             key: db_password
+        - name: db_role
+          valueFrom:
+           secretKeyRef:
+             name: db-creds
+             key: db_role
+

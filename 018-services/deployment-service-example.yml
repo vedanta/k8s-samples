@@ -3,7 +3,7 @@ kind: Deployment
 metadata: 
   name: deployment-service-example
 spec:
-  replicas: 3
+  replicas: 1
   selector: 
     matchLabels: 
       app: svc-example
