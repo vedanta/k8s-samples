@@ -1,0 +1,17 @@
+# Create a job that will roll a dice using image kodekloud/throw-dice. 
+# The image generates a random number between 1 and 6 and exits. 
+# It is a success only if it is a 6 else it is a failure. 
+# Check how many times it takes the job to trigger to get a successful outcome. 
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dice
+spec:
+  template:
+    metadata:
+    spec:
+      containers:
+      - image: kodekloud/throw-dice
+        name: dice
+      restartPolicy: OnFailure
+

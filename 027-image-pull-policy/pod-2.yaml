@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pod-2
+  name: pod-2
+spec:
+  containers:
+  - image: alpine
+    name: pod-2
+    command:
+    - '/bin/sh'
+    - '-c'
+    - 'while true; do sleep 1000; done'
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    system: seed
