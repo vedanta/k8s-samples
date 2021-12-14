@@ -7,6 +7,9 @@ kind: Job
 metadata:
   name: dice
 spec:
+  parallelism: 3
+  backoffLimit: 15
+  completions: 8
   template:
     metadata:
     spec:
@@ -14,4 +17,5 @@ spec:
       - image: kodekloud/throw-dice
         name: dice
       restartPolicy: OnFailure
+
 
